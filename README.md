@@ -40,7 +40,3 @@ See [BearLibTerminal](http://foo.wyrd.name/en:bearlibterminal)'s official [refer
 # Distribution
 
 In order for your executable to be run, you will have to package the appropriate [BearLibTerminal](http://foo.wyrd.name/en:bearlibterminal) shared library for a specific architecture.
-
-# TODO
-
-Add unit tests.
