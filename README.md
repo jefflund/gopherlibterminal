@@ -19,7 +19,7 @@ The official [reference](http://foo.wyrd.name/en:bearlibterminal:reference) for 
 
 I suggest you shorten "gopherlibterminal":
 
-```
+```go
 package main
 
 import glt "github.com/mpatraw/gopherlibterminal"
@@ -36,3 +36,7 @@ func main() {
 # Documentation
 
 See [BearLibTerminal](http://foo.wyrd.name/en:bearlibterminal)'s official [reference](http://foo.wyrd.name/en:bearlibterminal:reference).
+
+# TODO
+
+Currently only `terminal_readstr` and `terminal_printext` are missing.
