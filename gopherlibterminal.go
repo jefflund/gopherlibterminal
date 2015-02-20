@@ -140,9 +140,6 @@ const (
 	TkClose =		0xE0
 	TkResized =		0xE1
 
-	TkOff =			0
-	TkOn =			1
-
 	TkInputNone =		0
 	TkInputCancelled =	-1
 )
