@@ -12,8 +12,7 @@ import "unsafe"
 type Input int
 
 const (
-	TkNone Input =		0x00
-	TkA =			0x04
+	TkA Input =		0x04
 	TkB =			0x05
 	TkC =			0x06
 	TkD =			0x07
@@ -218,8 +217,10 @@ func PickBkColor(x, y int) uint32 {
 	return uint32(C.terminal_pick_bkcolor(C.int(x), C.int(y)))
 }
 
-func PutExt() {
-	// TODO
+func PutExt(x, y, dx, dy int, c rune, corners []uint32) {
+	code := C.int(c)
+	corn := (*C.color_t)(unsafe.Pointer(&corners[0]))
+	C.terminal_put_ext(C.int(x), C.int(y), C.int(dx), C.int(dy), code, corn)
 }
 
 func Print(x, y int, s string) {
@@ -262,8 +263,11 @@ func Peek() Input {
 	return Input(C.terminal_peek())
 }
 
-func ReadStr() {
-	// TODO
+func ReadStr(x, y int, buffer []byte) int {
+	buf := (*C.char)(unsafe.Pointer(&buffer[0]))
+	len := C.int(len(buffer))
+	rv := C.terminal_read_str(C.int(x), C.int(y), buf, len)
+	return int(rv)
 }
 
 func Delay(ms int) {

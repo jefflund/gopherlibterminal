@@ -1,5 +1,5 @@
 
-# GopherLibTerminal - Go BearLibTerminal Bindings
+# GopherLibTerminal - Go Bindings for BearLibTerminal
 
 This repository is a [Go](https://golang.org/) binding for the excellent [BearLibTerminal](http://foo.wyrd.name/en:bearlibterminal) library.
 
@@ -37,6 +37,10 @@ func main() {
 
 See [BearLibTerminal](http://foo.wyrd.name/en:bearlibterminal)'s official [reference](http://foo.wyrd.name/en:bearlibterminal:reference).
 
+# Distribution
+
+In order for your executable to be run, you will have to package the appropriate [BearLibTerminal](http://foo.wyrd.name/en:bearlibterminal) shared library for a specific architecture.
+
 # TODO
 
-Currently only `terminal_readstr` and `terminal_printext` are missing.
+Add unit tests.
