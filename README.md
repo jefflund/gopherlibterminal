@@ -15,7 +15,7 @@ The usual `go get github.com/mpatraw/gopherlibterminal` should work.
 
 # Usage
 
-The official [reference](http://foo.wyrd.name/en:bearlibterminal:reference) for [BearLibTerminal](http://foo.wyrd.name/en:bearlibterminal) should serve as the main documentation. Renaming has been to honor [Go](https://golang.org/)'s naming convention. `terminal_open` becomes `gopherlibterminal.Open`.
+The official [reference](http://foo.wyrd.name/en:bearlibterminal:reference) for [BearLibTerminal](http://foo.wyrd.name/en:bearlibterminal) should serve as the main documentation. All functions and constants have been renamed to honor [Go](https://golang.org/)'s naming convention. `terminal_open` becomes `gopherlibterminal.Open`.
 
 I suggest you shorten "gopherlibterminal":
 
