@@ -1,4 +1,4 @@
-package gopherlibterminal
+package glt
 
 import "testing"
 

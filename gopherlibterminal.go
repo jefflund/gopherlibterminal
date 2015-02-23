@@ -1,4 +1,4 @@
-package gopherlibterminal
+package glt
 
 // #cgo CFLAGS:
 // #cgo amd64 386 CFLAGS: -DX86=1
