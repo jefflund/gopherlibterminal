@@ -1,3 +1,5 @@
+// GopherLibTerminal is a wrapper over BearLibTerminal, a terminal
+// emulator over SDL.
 package glt
 
 // #cgo CFLAGS:
@@ -9,6 +11,7 @@ import "C"
 import "errors"
 import "unsafe"
 
+// Keyboard or mouse input.
 type Input int
 
 const (
@@ -143,6 +146,10 @@ const (
 	TkInputCancelled = -1
 )
 
+// This should be called first. This initializes the library and
+// readies the terminal with a size of 80x25 and white on black. This
+// doesn't create a window, the first call to Refresh() will. Returns
+// error on failure.
 func Open() error {
 	rv := C.terminal_open()
 	if rv == 0 {
@@ -151,10 +158,21 @@ func Open() error {
 	return nil
 }
 
+// Should be called when finished using the library.
 func Close() {
 	C.terminal_close()
 }
 
+// This function accepts a configuration string to configure various
+// library options, like managing fonts, tilesets, etc. The format is
+// semicolon separated. An example taken from the official docs:
+//
+// window.title='game';
+// font: UbuntuMono-R.ttf, size=12;
+// ini.settings.tile-size=16;
+//
+// See more at
+// http://foo.wyrd.name/en:bearlibterminal:reference:configuration
 func Set(opts string) error {
 	str := C.CString(opts)
 	rv := C.terminal_set(str)
@@ -165,14 +183,21 @@ func Set(opts string) error {
 	return nil
 }
 
+// Sets the foreground to a 32-bit color of the form 0xaarrggbb. Can
+// be queried using State(TkColor).
 func Color(c uint32) {
 	C.terminal_color(C.color_t(c))
 }
 
+// Sets the background to a 32-bit color of the form 0xaarrggbb. Can
+// be querid using State(TkBkcolor).
 func BkColor(c uint32) {
 	C.terminal_bkcolor(C.color_t(c))
 }
 
+// Setting composition to true makes it so writing to a cell does not
+// overwrite the cell's contents. Can be queried using
+// State(TkComposition).
 func Composition(q bool) {
 	if q {
 		C.terminal_composition(C.TK_ON)
@@ -181,64 +206,78 @@ func Composition(q bool) {
 	}
 }
 
+//
 func Layer(l uint8) {
 	C.terminal_layer(C.int(l))
 }
 
+//
 func Clear() {
 	C.terminal_clear()
 }
 
+//
 func ClearArea(x, y, w, h int) {
 	C.terminal_clear_area(C.int(x), C.int(y), C.int(w), C.int(h))
 }
 
+//
 func Crop(x, y, w, h int) {
 	C.terminal_crop(C.int(x), C.int(y), C.int(w), C.int(h))
 }
 
+//
 func Refresh() {
 	C.terminal_refresh()
 }
 
+//
 func Put(x, y int, c rune) {
 	C.terminal_put(C.int(x), C.int(y), C.int(c))
 }
 
+//
 func Pick(x, y int, l uint8) rune {
 	return rune(C.terminal_pick(C.int(x), C.int(y), C.int(l)))
 }
 
+//
 func PickColor(x, y int, l uint8) uint32 {
 	return uint32(C.terminal_pick_color(C.int(x), C.int(y), C.int(l)))
 }
 
+//
 func PickBkColor(x, y int) uint32 {
 	return uint32(C.terminal_pick_bkcolor(C.int(x), C.int(y)))
 }
 
+//
 func PutExt(x, y, dx, dy int, c rune, corners []uint32) {
 	code := C.int(c)
 	corn := (*C.color_t)(unsafe.Pointer(&corners[0]))
 	C.terminal_put_ext(C.int(x), C.int(y), C.int(dx), C.int(dy), code, corn)
 }
 
+//
 func Print(x, y int, s string) {
 	str := C.CString(s)
 	C.terminal_print(C.int(x), C.int(y), str)
 	C.free(unsafe.Pointer(str))
 }
 
+//
 func Measure(s string) {
 	str := C.CString(s)
 	C.terminal_measure(str)
 	C.free(unsafe.Pointer(str))
 }
 
+//
 func State(inp Input) int {
 	return int(C.terminal_state(C.int(inp)))
 }
 
+//
 func Check(inp Input) bool {
 	if C.terminal_state(C.int(inp)) == 0 {
 		return false
@@ -247,6 +286,7 @@ func Check(inp Input) bool {
 	}
 }
 
+//
 func HasInput() bool {
 	if C.terminal_has_input() == 0 {
 		return false
@@ -255,14 +295,17 @@ func HasInput() bool {
 	}
 }
 
+//
 func Read() Input {
 	return Input(C.terminal_read())
 }
 
+//
 func Peek() Input {
 	return Input(C.terminal_peek())
 }
 
+//
 func ReadStr(x, y int, buffer []byte) int {
 	buf := (*C.char)(unsafe.Pointer(&buffer[0]))
 	l := C.int(len(buffer))
@@ -270,10 +313,12 @@ func ReadStr(x, y int, buffer []byte) int {
 	return int(rv)
 }
 
+//
 func Delay(ms int) {
 	C.terminal_delay(C.int(ms))
 }
 
+//
 func ColorFromName(name string) uint32 {
 	str := C.CString(name)
 	col := C.color_from_name(str)
@@ -281,10 +326,12 @@ func ColorFromName(name string) uint32 {
 	return uint32(col)
 }
 
+//
 func ColorFromArgb(a, r, g, b uint8) uint32 {
 	ca := C.uint8_t(a)
 	cr := C.uint8_t(r)
 	cg := C.uint8_t(g)
 	cb := C.uint8_t(b)
 	return uint32(C.color_from_argb(ca, cr, cg, cb))
+
 }
