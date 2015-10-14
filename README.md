@@ -26,10 +26,10 @@ import "github.com/mpatraw/gopherlibterminal"
 
 func main() {
 	glt.Open()
+	defer glt.Close()
 	glt.Print(0, 0, "Hello, world!")
 	glt.Refresh()
 	glt.Delay(1000)
-	glt.Close()
 }
 ```
 
