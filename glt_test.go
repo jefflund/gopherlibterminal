@@ -6,6 +6,7 @@ func TestEverything(t *testing.T) {
 	x, y := 0, 0
 	nx, ny := 0, 0
 	Open()
+	defer Close()
 
 	for {
 		Color(0xff0000ff)
@@ -28,6 +29,4 @@ func TestEverything(t *testing.T) {
 			ny++
 		}
 	}
-
-	Close()
 }
