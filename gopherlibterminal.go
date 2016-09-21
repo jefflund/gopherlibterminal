@@ -1,5 +1,5 @@
-// GopherLibTerminal is a wrapper over BearLibTerminal, a terminal
-// emulator over SDL.
+// Package glt or GopherLibTerminal is a wrapper over BearLibTerminal, a
+// terminal emulator over SDL.
 package glt
 
 // #cgo CFLAGS:
@@ -11,9 +11,10 @@ import "C"
 import "errors"
 import "unsafe"
 
-// Keyboard or mouse input.
+// Input represents a scancode for events/states.
 type Input int
 
+// Input constants.
 const (
 	TkA          Input = 0x04
 	TkB          Input = 0x05
@@ -96,16 +97,16 @@ const (
 	TkKpMinus    Input = 0x56
 	TkKpPlus     Input = 0x57
 	TkKpEnter    Input = 0x58
-	TkKp_1       Input = 0x59
-	TkKp_2       Input = 0x5A
-	TkKp_3       Input = 0x5B
-	TkKp_4       Input = 0x5C
-	TkKp_5       Input = 0x5D
-	TkKp_6       Input = 0x5E
-	TkKp_7       Input = 0x5F
-	TkKp_8       Input = 0x60
-	TkKp_9       Input = 0x61
-	TkKp_0       Input = 0x62
+	TkKp1        Input = 0x59
+	TkKp2        Input = 0x5A
+	TkKp3        Input = 0x5B
+	TkKp4        Input = 0x5C
+	TkKp5        Input = 0x5D
+	TkKp6        Input = 0x5E
+	TkKp7        Input = 0x5F
+	TkKp8        Input = 0x60
+	TkKp9        Input = 0x61
+	TkKp0        Input = 0x62
 	TkKpPeriod   Input = 0x63
 	TkShift      Input = 0x70
 	TkControl    Input = 0x71
