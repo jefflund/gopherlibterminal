@@ -147,32 +147,38 @@ const (
 	TkInputCancelled Input = -1
 )
 
-// This should be called first. This initializes the library and
-// readies the terminal with a size of 80x25 and white on black. This
-// doesn't create a window, the first call to Refresh() will. Returns
-// error on failure.
+// Open initializes GopherLibTerminal, configuring the window with default
+// parameters: 80×25 cells, Fixedsys Excelsior font, white text on a black
+// background. This function does not bring the window to screen. The window is
+// not shown until the first call to refresh. Note that unless the library is
+// initialized with successful call to open, all other library functions will
+// do nothing but return immediately with return code (if any) indicating an
+// error.
 func Open() error {
 	rv := C.terminal_open()
 	if rv == 0 {
-		return errors.New("failed to start bearlibterminal")
+		return errors.New("failed to start gopherlibterminal")
 	}
 	return nil
 }
 
-// Should be called when finished using the library.
+// Close is symmetric to Open, and closes the window and deinitializes
+// GopherLibTerminal.
 func Close() {
 	C.terminal_close()
 }
 
-// This function accepts a configuration string to configure various
-// library options, like managing fonts, tilesets, etc. The format is
-// semicolon separated. An example taken from the official docs:
+// Set configures GopherLibTerminal options and mechanics, managing fonts,
+// tilesets and configuration files. Set accepts a configuration string with
+// various options described in it:
 //
 // window.title='game';
 // font: UbuntuMono-R.ttf, size=12;
 // ini.settings.tile-size=16;
 //
 // See more at
+// For more information about configuration string format, library options, and
+// over function behavior, refer to the configuration documentation:
 // http://foo.wyrd.name/en:bearlibterminal:reference:configuration
 func Set(opts string) error {
 	str := C.CString(opts)
@@ -184,14 +190,20 @@ func Set(opts string) error {
 	return nil
 }
 
-// Sets the foreground to a 32-bit color of the form 0xaarrggbb. Can
-// be queried using State(TkColor).
+// Color sets the current foreground color which will be used by all output
+// functions called later. The color_t type is a 32-bit unsigned integer
+// describing color in BGRA (0xAARRGGBB) format. This numeric color
+// representation can be constructed directly or by color from argb and color
+// from name utility functions.  The numeric value of current foreground color
+// can be retrieved by reading TkColor state.
 func Color(c uint32) {
 	C.terminal_color(C.color_t(c))
 }
 
-// Sets the background to a 32-bit color of the form 0xaarrggbb. Can
-// be querid using State(TkBkcolor).
+// BkColor is similar to Color but sets the current background color. Otherwise
+// the function behaves exactly as its foreground counterpart. Note that only
+// the first, lowest layer of cells has background.  The numeric value of
+// current background color can be retrieved by reading TkBkcolor state.
 func BkColor(c uint32) {
 	C.terminal_bkcolor(C.color_t(c))
 }
@@ -199,6 +211,15 @@ func BkColor(c uint32) {
 // Setting composition to true makes it so writing to a cell does not
 // overwrite the cell's contents. Can be queried using
 // State(TkComposition).
+
+// Composition sets the character composition mode. When composition is set to
+// false, putting a tile in a cell (by put or print) simply replaces the
+// contents of that cell. When composition is set to true, the tile is added to
+// the cell's tile stack. This has visual effect of combining several tiles
+// into one. There is no enforced limit to number of tiles in a single cell.
+// Note that each tile in the stack has its own foreground color and offset
+// (see put ext). The current composition mode can be retrieved by reading
+// TkComposition state.
 func Composition(q bool) {
 	if q {
 		C.terminal_composition(C.TK_ON)
